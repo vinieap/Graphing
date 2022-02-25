@@ -2,10 +2,8 @@ from typing import Union, get_args
 from math import sqrt, atan2, degrees
 from dataclasses import dataclass, field
 
-from argon2 import Type
 
-
-@dataclass(order=True)
+@dataclass(order=True, slots=True)
 class Point:
 
     sort_index: float = field(init=False, repr=False)

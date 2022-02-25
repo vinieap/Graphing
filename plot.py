@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from random import randint
 from colour import Color
 
-NUM_POINTS = 10_000
+NUM_POINTS = 100_000
 
 LOWER_X = -1_000_000_000
 UPPER_X = 1_000_000_000
