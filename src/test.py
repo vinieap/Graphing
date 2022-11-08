@@ -17,16 +17,17 @@ edges = [
 
 g.add_edges(edges)
 
-for node in g.get_nodes():
-    print(node)
-
-for edge in g.get_edges():
-    print(edge)
-
-g2 = Undirected_Graph.from_edges(edges)
+print(f"Nodes:")
 
 for node in g.get_nodes():
     print(node)
 
+print(f"Edges:")
+
 for edge in g.get_edges():
     print(edge)
+
+print(f"Degrees:")
+
+for node in g.get_nodes():
+    print(f"{node} Degree: {g.degree(node)}")

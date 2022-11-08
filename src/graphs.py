@@ -5,13 +5,12 @@ from node import Node
 
 
 class Undirected_Graph:
-    def __init__(self, nodes: list = None):
+    def __init__(self):
 
         self.nodes = set()
         self.edges = set()
-
-        if nodes:
-            self.nodes = nodes
+        self.neighbors = dict()
+        
 
     def add_node(self, node: Node):
         if not isinstance(node, Node):
@@ -44,6 +43,11 @@ class Undirected_Graph:
 
         if edge not in self.edges:
             self.edges.add(edge)
+            node1_neighbors = self.neighbors.get(node1, [])
+            node2_neighbors = self.neighbors.get(node2, [])
+
+            self.neighbors[node1] = node1_neighbors + [node2]
+            self.neighbors[node2] = node2_neighbors + [node1]
 
     def add_edges(self, edges: list):
         if not isinstance(edges, list):
@@ -57,6 +61,25 @@ class Undirected_Graph:
 
     def get_edges(self):
         return self.edges
+
+    
+    def get_neighbors(self, node: Node):
+        if not isinstance(node, Node):
+            raise TypeError("node must be a Node object")
+
+        if node not in self.nodes:
+            raise ValueError("node not in graph")
+
+        return self.neighbors.get(node, [])
+
+    def degree(self, node: Node):
+        if not isinstance(node, Node):
+            raise TypeError("node must be a Node object")
+
+        if node not in self.nodes:
+            return -1
+        
+        return len(self.get_neighbors(node))
 
     @staticmethod
     def from_edges(edges):
