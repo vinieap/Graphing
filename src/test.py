@@ -31,3 +31,20 @@ print(f"Degrees:")
 
 for node in g.get_nodes():
     print(f"{node} Degree: {g.degree(node)}")
+
+
+# Test Connectivity
+print(f"G is connected? {g.is_connected()}")
+print(f"G is complete? {g.is_complete()}")
+
+print(f"Adding edge n2-n3")
+g.add_edge(n2, n3, 3)
+
+print(f"G is connnected? {g.is_connected()}")
+print(f"G is complete? {g.is_complete()}")
+
+print(f"Adding isolated node n4")
+g.add_node(Node(4, "n4"))
+
+print(f"G is connected? {g.is_connected()}")
+print(f"G is complete? {g.is_complete()}")

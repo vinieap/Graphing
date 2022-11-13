@@ -3,6 +3,7 @@ from typing import Union
 from edge import Edge
 from node import Node
 
+from itertools import combinations 
 
 class Undirected_Graph:
     def __init__(self):
@@ -18,6 +19,7 @@ class Undirected_Graph:
 
         if node not in self.nodes:
             self.nodes.add(node)
+            self.neighbors[node] = set()        
 
     def add_nodes(self, nodes: list):
         if not isinstance(nodes, list):
@@ -34,20 +36,18 @@ class Undirected_Graph:
             raise TypeError("weight must be an integer or float")
 
         if node1 not in self.nodes:
-            self.nodes.add(node1)
+            self.add_node(node1)
 
         if node2 not in self.nodes:
-            self.nodes.add(node2)
+            self.add_node(node2)
 
         edge = Edge(node1, node2, weight)
 
         if edge not in self.edges:
             self.edges.add(edge)
-            node1_neighbors = self.neighbors.get(node1, [])
-            node2_neighbors = self.neighbors.get(node2, [])
 
-            self.neighbors[node1] = node1_neighbors + [node2]
-            self.neighbors[node2] = node2_neighbors + [node1]
+            self.neighbors[node1].add(node2)
+            self.neighbors[node2].add(node1)
 
     def add_edges(self, edges: list):
         if not isinstance(edges, list):
@@ -70,7 +70,7 @@ class Undirected_Graph:
         if node not in self.nodes:
             raise ValueError("node not in graph")
 
-        return self.neighbors.get(node, [])
+        return self.neighbors.get(node, set())
 
     def degree(self, node: Node):
         if not isinstance(node, Node):
@@ -80,6 +80,35 @@ class Undirected_Graph:
             return -1
         
         return len(self.get_neighbors(node))
+
+    def is_connected(self):
+        if len(self.nodes) == 0 or len(self.nodes) == 1:
+            return True
+
+        seen = set()
+        queue = [next(iter(self.nodes))] # Cannot subscript sets
+
+        while len(queue) != 0:
+            node = queue.pop(0)
+            seen.add(node)
+
+            neighbors = self.get_neighbors(node)
+
+            for neighbor in neighbors:
+                if neighbor not in seen:
+                    queue.append(neighbor)
+
+        return len(seen) == len(self.nodes)
+
+    def is_complete(self):
+        if len(self.nodes) == 0 or len(self.nodes) == 1:
+            return True
+
+        for n1, n2 in combinations(self.nodes, 2):
+            if n1 not in self.neighbors[n2]:
+                return False
+
+        return True
 
     @staticmethod
     def from_edges(edges):
